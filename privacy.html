@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-view="privacy">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tecno Dibujado Publicador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm, honest, plain legal text for a one-person creator tool
+   IDEA: a sheet from the creator's drawing desk, with the brand chip sketched at the top
+   PICTURE: the app icon: a glowing chip being drawn by a yellow pencil
+   COLOUR and TYPE: night desk #12111a, chip red #e8323c, pencil yellow #f5c400; Kalam titles, Inter text
+   LAYOUT: header band with chip + name, tab row, one reading column */
+:root{color-scheme:dark;--bg:#12111a;--card:#1b1a25;--ink:#ecebf2;--mute:#a9a7b8;--red:#e8323c;--yel:#f5c400;--line:#2c2a3a}
+:root[data-theme=light],:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(28px,4vw,56px) max(5vw,16px)}
+header{background:radial-gradient(ellipse at 75% 40%,#3a1016 0,#12111a 60%);border-bottom:1px solid var(--line)}
+.top{max-width:960px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:24px;align-items:center}
+h1,h2{font-family:Kalam,cursive;line-height:1.05;text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,5vw,50px)}
+h2{font-size:clamp(26px,3.4vw,34px);margin-bottom:6px}
+h3{font-size:17px;margin:26px 0 6px;color:var(--yel)}
+.lead{color:var(--mute);margin:12px 0 0;max-width:60ch}
+.fig{position:relative;height:200px}
+.fig svg{position:absolute;inset:0;width:100%;height:100%}
+nav{position:sticky;top:0;z-index:2;background:var(--bg);border-bottom:1px solid var(--line)}
+.tabs{max-width:960px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px;padding:10px max(5vw,16px);align-items:center}
+.tabs a,.tabs button{font:600 15px Inter,sans-serif;color:var(--ink);text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:10px 16px;min-height:44px;display:inline-flex;align-items:center;cursor:pointer}
+.tabs a[aria-current=page]{background:var(--red);border-color:var(--red);color:#fff}
+.tabs .lang{margin-inline-start:auto}
+a:focus-visible,button:focus-visible{outline:3px solid var(--yel);outline-offset:2px}
+main{max-width:760px;margin:0 auto}
+p,li{max-width:68ch}
+ul{padding-inline-start:22px}
+.date{color:var(--mute);font-size:14px;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-top:20px}
+main a{color:var(--yel)}
+footer{color:var(--mute);font-size:14px;text-align:center;border-top:1px solid var(--line)}
+@media(max-width:600px){.top{grid-template-columns:1fr}.fig{height:150px;order:-1}.tabs .lang{margin-inline-start:0}}
+</style>
+</head>
+<body>
+<header class="band">
+  <div class="top">
+    <div>
+      <h1>Tecno Dibujado Publicador</h1>
+      <p class="lead" id="lead"></p>
+    </div>
+    <div class="fig" aria-hidden="true">
+      <svg viewBox="0 0 220 200">
+        <defs><radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#e8323c" stop-opacity=".55"/><stop offset="1" stop-color="#e8323c" stop-opacity="0"/></radialGradient></defs>
+        <circle cx="105" cy="95" r="90" fill="url(#g)"/>
+        <g stroke="#ecebf2" stroke-width="5" stroke-linecap="round" fill="none">
+          <rect x="60" y="50" width="90" height="90" rx="8" fill="#1b1a25"/>
+          <g id="p"><line x1="78" y1="50" x2="78" y2="32"/><line x1="96" y1="50" x2="96" y2="32"/><line x1="114" y1="50" x2="114" y2="32"/><line x1="132" y1="50" x2="132" y2="32"/></g>
+          <use href="#p" transform="translate(0 108)"/>
+          <use href="#p" transform="rotate(90 105 95) translate(0 0)"/>
+          <use href="#p" transform="rotate(-90 105 95)"/>
+        </g>
+        <polyline points="78,118 78,98 100,98 100,78 128,78" fill="none" stroke="#e8323c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="78" cy="118" r="6" fill="#e8323c"/><circle cx="128" cy="78" r="6" fill="#e8323c"/>
+        <g transform="rotate(-45 165 150)"><rect x="150" y="140" width="62" height="18" rx="3" fill="#f5c400"/><polygon points="150,140 150,158 134,149" fill="#f3d9a6"/><polygon points="139,146 139,152 134,149" fill="#12111a"/></g>
+      </svg>
+    </div>
+  </div>
+</header>
+<nav><div class="tabs" id="tabs"></div></nav>
+<main class="band" id="main"></main>
+<footer class="band" id="foot"></footer>
+<script>
+{
+const MAIL='vicenteatusparia@gmail.com';
+const T={
+es:{
+  lead:'Herramienta privada con la que el creador del canal Tecno Dibujado publica sus propios videos en TikTok, YouTube, Facebook e Instagram.',
+  tabs:[['inicio','Inicio'],['terminos','Términos del servicio'],['privacidad','Política de privacidad']],
+  other:['English','home'],
+  date:'Última actualización: 23 de noviembre de 2026',
+  foot:'Tecno Dibujado · @tecnodibujado · Contacto: '+MAIL,
+  inicio:`<h2>Qué es</h2>
+<p>Tecno Dibujado Publicador es una herramienta de uso personal. Funciona en la computadora del creador del canal Tecno Dibujado (@tecnodibujado) y le permite subir, con un solo clic, los videos que él mismo hizo y aprobó.</p>
+<div class="card"><h3 style="margin-top:0">Cómo funciona</h3><ul>
+<li>El creador inicia sesión en cada red con su propia cuenta, mediante el acceso oficial de cada plataforma.</li>
+<li>Revisa el video y pulsa «Aprobar». Nada se publica sin ese clic.</li>
+<li>La herramienta envía el video, su título y su descripción por las API oficiales: TikTok Content Posting API, YouTube Data API y la API de Meta para Facebook e Instagram.</li>
+<li>Muestra el estado de cada red: pendiente, programado, publicado o error.</li></ul></div>
+<p>No es un servicio abierto al público: no tiene registro de usuarios ni otras cuentas aparte de las de Tecno Dibujado.</p>`,
+  terminos:`<h2>Términos del servicio</h2>
+<h3>1. Quién la usa</h3><p>Solo el creador del canal Tecno Dibujado la usa, en su propia computadora y con sus propias cuentas. No se ofrece a terceros.</p>
+<h3>2. Qué hace</h3><p>Sube a TikTok, YouTube, Facebook e Instagram videos originales creados por Tecno Dibujado, solo después de que el creador los aprueba de forma manual.</p>
+<h3>3. Reglas de cada plataforma</h3><p>Cada publicación cumple las condiciones de la plataforma de destino, entre ellas los <a href="https://www.tiktok.com/legal/page/global/terms-of-service/es">Términos de servicio de TikTok</a>, sus Normas de la comunidad, los <a href="https://www.youtube.com/t/terms">Términos de servicio de YouTube</a> y las Condiciones de Meta.</p>
+<h3>4. Contenido</h3><p>El creador es el único responsable del contenido que publica. La herramienta no crea ni cambia el contenido de los videos: solo los envía.</p>
+<h3>5. Sin garantía</h3><p>La herramienta se ofrece tal como está. Si una plataforma rechaza una subida, la herramienta lo informa y no vuelve a publicar por su cuenta.</p>
+<h3>6. Cambios</h3><p>Estos términos pueden actualizarse. La fecha de arriba indica la última versión.</p>
+<h3>7. Contacto</h3><p>${MAIL}</p>`,
+  privacidad:`<h2>Política de privacidad</h2>
+<h3>1. Qué datos usa</h3><ul>
+<li><b>De TikTok:</b> la información básica del perfil (identificador de la cuenta, nombre visible y foto). Sirve solo para confirmar que la cuenta conectada es @tecnodibujado antes de subir.</li>
+<li><b>De YouTube, Facebook e Instagram:</b> el identificador del canal, de la Página o de la cuenta, con el mismo fin.</li>
+<li><b>Los videos, títulos y descripciones</b> de Tecno Dibujado que el creador aprueba.</li></ul>
+<h3>2. Dónde se guardan</h3><p>Los permisos de acceso (tokens) se guardan solo en la computadora del creador, en el Administrador de credenciales de Windows. No hay servidores ni bases de datos externas. Los videos se envían directamente desde esa computadora a cada plataforma.</p>
+<h3>3. Con quién se comparten</h3><p>Con nadie. No se venden datos, no se usan para publicidad y no se mide ni se rastrea a nadie. Los datos solo viajan a la plataforma donde se publica el video.</p>
+<h3>4. Datos de otras personas</h3><p>La herramienta no recoge datos de seguidores, espectadores ni de otros usuarios.</p>
+<h3>5. Cómo quitar el acceso</h3><p>El acceso se puede quitar en cualquier momento desde cada plataforma (por ejemplo, en TikTok: Configuración y privacidad › Seguridad › Permisos de apps; en Google: <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>). Al quitarlo, la herramienta borra sus tokens guardados.</p>
+<h3>6. Servicios de Google</h3><p>El uso de YouTube se rige también por la <a href="https://policies.google.com/privacy">Política de privacidad de Google</a>.</p>
+<h3>7. Contacto</h3><p>Preguntas o pedidos de borrado: ${MAIL}</p>`
+},
+en:{
+  lead:'A private tool that lets the creator of the Tecno Dibujado channel publish his own videos to TikTok, YouTube, Facebook and Instagram.',
+  tabs:[['home','Home'],['terms','Terms of Service'],['privacy','Privacy Policy']],
+  other:['Español','inicio'],
+  date:'Last updated: November 23, 2026',
+  foot:'Tecno Dibujado · @tecnodibujado · Contact: '+MAIL,
+  home:`<h2>What it is</h2>
+<p>Tecno Dibujado Publicador is a personal tool. It runs on the computer of the creator of the Tecno Dibujado channel (@tecnodibujado) and lets him upload, with one click, the videos he made and approved himself.</p>
+<div class="card"><h3 style="margin-top:0">How it works</h3><ul>
+<li>The creator signs in to each network with his own account, through each platform's official login.</li>
+<li>He reviews the video and clicks “Approve”. Nothing is published without that click.</li>
+<li>The tool sends the video, title and caption through the official APIs: TikTok Content Posting API, YouTube Data API and Meta's API for Facebook and Instagram.</li>
+<li>It shows each network's status: pending, scheduled, published or error.</li></ul></div>
+<p>It is not a public service: it has no user sign-up and no accounts other than Tecno Dibujado's.</p>`,
+  terms:`<h2>Terms of Service</h2>
+<h3>1. Who uses it</h3><p>Only the creator of the Tecno Dibujado channel uses it, on his own computer and with his own accounts. It is not offered to third parties.</p>
+<h3>2. What it does</h3><p>It uploads original videos made by Tecno Dibujado to TikTok, YouTube, Facebook and Instagram, only after the creator approves them manually.</p>
+<h3>3. Platform rules</h3><p>Every post follows the destination platform's terms, including the <a href="https://www.tiktok.com/legal/page/global/terms-of-service/en">TikTok Terms of Service</a>, its Community Guidelines, the <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a> and Meta's Terms.</p>
+<h3>4. Content</h3><p>The creator is solely responsible for the content he publishes. The tool does not create or change video content: it only sends it.</p>
+<h3>5. No warranty</h3><p>The tool is provided as is. If a platform rejects an upload, the tool reports it and does not republish on its own.</p>
+<h3>6. Changes</h3><p>These terms may be updated. The date above shows the latest version.</p>
+<h3>7. Contact</h3><p>${MAIL}</p>`,
+  privacy:`<h2>Privacy Policy</h2>
+<h3>1. Data used</h3><ul>
+<li><b>From TikTok:</b> basic profile information (account ID, display name and avatar), used only to confirm the connected account is @tecnodibujado before uploading.</li>
+<li><b>From YouTube, Facebook and Instagram:</b> the channel, Page or account ID, for the same purpose.</li>
+<li><b>Videos, titles and captions</b> from Tecno Dibujado that the creator approves.</li></ul>
+<h3>2. Where it is stored</h3><p>Access tokens are stored only on the creator's computer, in Windows Credential Manager. There are no external servers or databases. Videos are sent directly from that computer to each platform.</p>
+<h3>3. Sharing</h3><p>None. Data is not sold, not used for advertising, and nobody is tracked or measured. Data only goes to the platform where the video is published.</p>
+<h3>4. Other people's data</h3><p>The tool does not collect data about followers, viewers or any other users.</p>
+<h3>5. Removing access</h3><p>Access can be removed at any time from each platform (for example, in TikTok: Settings and privacy › Security › App permissions; in Google: <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>). When access is removed, the tool deletes its stored tokens.</p>
+<h3>6. Google services</h3><p>Use of YouTube is also governed by the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</p>
+<h3>7. Contact</h3><p>Questions or deletion requests: ${MAIL}</p>`
+}};
+const map={inicio:'es',terminos:'es',privacidad:'es',home:'en',terms:'en',privacy:'en'};
+const tabs=document.getElementById('tabs'),main=document.getElementById('main');
+function show(){
+  const h=location.hash.slice(1);const v=map[h]?h:(document.documentElement.dataset.view||'inicio');const L=T[map[v]];
+  document.documentElement.lang=map[v];
+  document.getElementById('lead').textContent=L.lead;
+  tabs.innerHTML=L.tabs.map(([id,t])=>`<a href="#${id}"${id===v?' aria-current="page"':''}>${t}</a>`).join('')+`<a class="lang" href="#${L.other[1]}">${L.other[0]}</a>`;
+  main.innerHTML=`<p class="date">${L.date}</p>`+L[v];
+  document.getElementById('foot').textContent=L.foot;
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',show);show();
+}
+</script>
+</body>
+</html>
